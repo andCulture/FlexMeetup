@@ -1,0 +1,7 @@
+html,body{
+	margin:0;
+	background:#000 url('../images/tileBackground.jpg') repeat-x;
+	font-family: arial, helvetica, sans-serif;
+	font-size:.9em;
+	color:#fff;
+	}

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute"
+				width="100%"
+				height="100%"
+				backgroundColor="0x000000"
+				creationComplete="application1_creationCompleteHandler(event)">
+	<mx:Style>
+		Label{
+			font-size:30px;
+			font-weight:bold;
+			color:#FFFFFF;	
+		}
+		VBox{
+			padding-left:20px;
+			padding-bottom:20px;
+			padding-top:20px;
+			padding-right:20px;	
+		}
+		TextArea{
+			font-size:30px;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+
+			//---------------------------------
+			//
+			//	Properties
+			//
+			//---------------------------------
+			//---------------------------------
+			//	Configuration
+			//---------------------------------
+
+			private var _debugMode:Boolean = false;
+
+			[Bindable]
+			private var _applicationIconPath:String;
+
+			[Bindable]
+			private var _applicationIconCaption:String;
+
+			//---------------------------------
+			//	XML Handling
+			//---------------------------------
+
+			private var _loader:URLLoader;
+
+			//---------------------------------
+			//
+			//	Private Methods
+			//
+			//---------------------------------
+
+			private function parseValue(value:String):* {
+				if (value.toLowerCase() == "true") {
+					return true;
+				} else if (value.toLowerCase() == "false") {
+					return false;
+				}
+				return value;
+			}
+
+			private function ctrace(message:String):void {
+				if (_debugMode) {
+					trace(message);
+				}
+			}
+
+			//---------------------------------
+			//
+			//	Events
+			//
+			//---------------------------------
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void {
+				trace("[Application.application1_creationCompleteHandler]");
+				var params:Object = {Username: "Winton"};
+				configurationService.send(params);
+			}
+
+			private function handleResult(event:ResultEvent):void {
+				trace("[Application.handleResult]");
+
+				//Handle Result (E4X)
+				var result:XMLList = new XMLList(event.result);
+				_debugMode = parseValue(result..debugMode);
+				_applicationIconPath = result..applicationIconPath;
+				_applicationIconCaption = result..applicationIconPath.@caption;
+
+				for each (var node:XML in result.children()) {
+					var output:String = "[" + node.name().toString() + "] " + parseValue(node.toString());
+					wOutput.text += output + "\n";
+					ctrace(output);
+				}
+			}
+
+			private function handleFault(event:FaultEvent):void {
+				trace("[Application.handleFault] ", event.fault);
+			}
+		]]>
+	</mx:Script>
+
+	<mx:HTTPService id="configurationService"
+					url="http://localhost:8888/ConfigurationService.php"
+					resultFormat="e4x"
+					method="POST"
+					result="handleResult(event)"
+					fault="handleFault(event)"/>
+
+	<mx:VBox width="100%">
+		<mx:Label text="XML Nodes:"/>
+		<mx:TextArea id="wOutput" width="100%" height="100" verticalScrollPolicy="off"/>
+		<mx:Label text="{_applicationIconCaption}"/>
+		<mx:Image source="{_applicationIconPath}"/>
+	</mx:VBox>
+
+</mx:Application>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute"
+				width="100%"
+				height="100%"
+				backgroundColor="0x000000"
+				creationComplete="application1_creationCompleteHandler(event)">
+	<mx:Style>
+		Label{
+			font-size:30px;
+			font-weight:bold;
+			color:#FFFFFF;	
+		}
+		VBox{
+			padding-left:20px;
+			padding-bottom:20px;
+			padding-top:20px;
+			padding-right:20px;	
+		}
+		TextArea{
+			font-size:30px;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			//---------------------------------
+			//
+			//	Properties
+			//
+			//---------------------------------
+			//---------------------------------
+			//	Configuration
+			//---------------------------------
+
+			private var _debugMode:Boolean = false;
+
+			[Bindable]
+			private var _applicationIconPath:String;
+
+			[Bindable]
+			private var _applicationIconCaption:String;
+
+			//---------------------------------
+			//	XML Handling
+			//---------------------------------
+
+			private var _loader:URLLoader;
+
+			//---------------------------------
+			//
+			//	Private Methods
+			//
+			//---------------------------------
+
+			private function parseValue(value:String):* {
+				if (value.toLowerCase() == "true") {
+					return true;
+				} else if (value.toLowerCase() == "false") {
+					return false;
+				}
+				return value;
+			}
+
+			private function ctrace(message:String):void {
+				if (_debugMode) {
+					trace(message);
+				}
+			}
+
+			//---------------------------------
+			//
+			//	Events
+			//
+			//---------------------------------
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void {
+				trace("[Application.application1_creationCompleteHandler]");
+				_loader = new URLLoader();
+				_loader.addEventListener(Event.COMPLETE, handleXMLDataLoaded);
+				_loader.addEventListener(IOErrorEvent.IO_ERROR, handleXMLDataIOError);
+				_loader.load(new URLRequest("config.xml"));
+			}
+
+			private function handleXMLDataLoaded(event:Event):void {
+				trace("[Application.handleXMLDataLoaded]");
+				_loader.removeEventListener(Event.COMPLETE, handleXMLDataLoaded);
+				_loader.removeEventListener(IOErrorEvent.IO_ERROR, handleXMLDataIOError);
+				_loader = null;
+
+				//Handle Result (E4X)
+				var result:XMLList = new XMLList(event.target.data);
+				_debugMode = parseValue(result..debugMode);
+				_applicationIconPath = result..applicationIconPath;
+				_applicationIconCaption = result..applicationIconPath.@caption;
+
+				for each (var node:XML in result.children()) {
+					var output:String = "[" + node.name().toString() + "] " + parseValue(node.toString());
+					wOutput.text += output + "\n";
+					ctrace(output);
+				}
+			}
+
+			private function handleXMLDataIOError(event:IOErrorEvent):void {
+				trace("[Application.handleXMLDataIOError] ", event.text);
+			}
+		]]>
+	</mx:Script>
+
+	<mx:VBox width="100%">
+		<mx:Label text="XML Nodes:"/>
+		<mx:TextArea id="wOutput" width="100%" height="100" verticalScrollPolicy="off"/>
+		<mx:Label text="{_applicationIconCaption}"/>
+		<mx:Image source="{_applicationIconPath}"/>
+	</mx:VBox>
+
+</mx:Application>

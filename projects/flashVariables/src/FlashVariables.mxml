@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute"
+				width="100%"
+				height="100%"
+				backgroundColor="0x000000"
+				creationComplete="application1_creationCompleteHandler(event)">
+	<mx:Style>
+		Label{
+			font-size:30px;
+			font-weight:bold;
+			color:#FFFFFF;	
+		}
+		VBox{
+			padding-left:20px;
+			padding-bottom:20px;
+			padding-top:20px;
+			padding-right:20px;	
+		}
+		TextArea{
+			font-size:30px;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			//---------------------------------
+			//
+			//	Properties
+			//
+			//---------------------------------
+			private var _debugMode:Boolean = false;
+
+			//---------------------------------
+			//
+			//	Private Methods
+			//
+			//---------------------------------
+			private function ctrace(message:String):void {
+				if (_debugMode) {
+					trace(message);
+				}
+			}
+
+			//---------------------------------
+			//
+			//	Events
+			//
+			//---------------------------------
+			protected function application1_creationCompleteHandler(event:FlexEvent):void {
+				trace("[Application.application1_creationCompleteHandler]");
+
+				/**
+				 * Flash
+				 */
+				//var params:Object = LoaderInfo(this.root.loaderInfo).parameters;
+
+				/**
+				 * Flex
+				 */
+				var params:Object = Application.application.parameters;
+
+				_debugMode = params.debugMode ? params.debugMode : false;
+
+				for (var key:String in params) {
+					var output:String = ("[" + key + "] " + params[key]);
+					wOutput.text += output + "\n";
+					ctrace(output);
+				}
+			}
+		]]>
+	</mx:Script>
+
+	<mx:VBox width="100%" height="100%">
+		<mx:Label text="Flash Variables:"/>
+		<mx:TextArea id="wOutput" width="100%" height="100%"/>
+	</mx:VBox>
+
+</mx:Application>

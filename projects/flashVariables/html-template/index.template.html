@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>${title}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="assets/style/global.style.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="assets/scripts/swfobject.js" charset="iso-8859-1"></script>	
+	
+		<!--  BEGIN Browser History required section -->
+		<script src="history/history.js" language="javascript"></script>
+		<!--  END Browser History required section -->
+	</head>
+	<body>
+		<div id="flexApplication">
+			Replacement code
+		</div><!-- close flashcontent -->
+		
+		<script type="text/javascript">
+			// <![CDATA[
+			var so = new SWFObject("FlashVariables.swf", "main", "100%", "100%", "10", "#000000");
+			so.addParam("AllowScriptAccess", "always");
+			so.addParam("salign", "LT");
+			
+			so.addVariable("debugMode", true);
+			so.addVariable("configurationOption2", "Configuration Option Two");
+
+			so.write("flexApplication");
+			// ]]>
+		</script>
+		
+		<!--
+		
+		AC_FL_RunContent(
+		"src", "FlashVariables",
+		"width", "100%",
+		"height", "100%",
+		"align", "middle",
+		"id", "FlashVars",
+		"quality", "high",
+		"bgcolor", "#869ca7",
+		"name", "FlashVars",
+		"flashvars",'debugMode=true&historyUrl=history.htm%3F&lconid=' + lc_id + '',
+		"allowScriptAccess","always",
+		"type", "application/x-shockwave-flash",
+		"pluginspage", http://www.adobe.com/go/getflashplayer
+		);
+		
+		
+		<embed src="FlashVariables.swf?debugMode=true" quality="high" bgcolor="#869ca7"
+		width="100%" height="100%" name="FlashVars" align="middle"
+		play="true"
+		loop="false"
+		quality="high"
+		flashvars='debugMode=true'
+		allowScriptAccess="always"
+		type="application/x-shockwave-flash"
+		pluginspage="http://www.adobe.com/go/getflashplayer">
+		</embed>
+		-->
+		
+	</body>
+</html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute"
+				width="100%"
+				height="100%"
+				backgroundColor="0x000000"
+				creationComplete="application1_creationCompleteHandler(event)">
+	<mx:Style>
+		Label{
+			font-size:30px;
+			font-weight:bold;
+			color:#FFFFFF;	
+		}
+		VBox{
+			padding-left:20px;
+			padding-bottom:20px;
+			padding-top:20px;
+			padding-right:20px;	
+		}
+		TextArea{
+			font-size:30px;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import descriptors.ConfigurationDescriptor;
+
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.remoting.mxml.RemoteObject;
+			import mx.utils.ObjectUtil;
+
+			//---------------------------------
+			//
+			//	Properties
+			//
+			//---------------------------------
+			//---------------------------------
+			//	Configuration
+			//---------------------------------
+
+			[Bindable]
+			private var _configuration:ConfigurationDescriptor;
+
+			//---------------------------------
+			//	Service Handling
+			//---------------------------------
+
+			private var _remoteObject:RemoteObject;
+
+			public function get remoteObject():RemoteObject {
+				if (_remoteObject == null) {
+					_remoteObject = new RemoteObject();
+					_remoteObject.destination = "GenericDestination";
+					_remoteObject.endpoint = "http://10.100.0.177/weborb.aspx"
+					_remoteObject.source = "ServiceLibrary.ConfigurationService";
+				}
+				return _remoteObject;
+			}
+
+			//---------------------------------
+			//
+			//	Private Methods
+			//
+			//---------------------------------
+
+			//---------------------------------
+			//
+			//	Events
+			//
+			//---------------------------------
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void {
+				trace("[Application.application1_creationCompleteHandler]");
+				this.remoteObject.RetrieveConfiguration.addEventListener(ResultEvent.RESULT, handleResult);
+				this.remoteObject.RetrieveConfiguration.addEventListener(FaultEvent.FAULT, handleFault);
+				this.remoteObject.RetrieveConfiguration("AMF");
+			}
+
+			private function handleResult(event:ResultEvent):void {
+				trace("[Application.handleResult]");
+				_configuration = event.result as ConfigurationDescriptor;
+			}
+
+			private function handleFault(event:FaultEvent):void {
+				trace("[Application.handleFault] ", event.fault);
+			}
+		]]>
+	</mx:Script>
+
+	<mx:VBox width="100%">
+		<mx:Label text="Object Properties:"/>
+		<mx:TextArea id="wOutput"
+					 text="{ObjectUtil.toString(_configuration)}"
+					 width="100%"
+					 height="250"
+					 verticalScrollPolicy="off"/>
+		<mx:Label text="{_configuration.applicationIconCaption}"/>
+		<mx:Image source="{_configuration.applicationIconPath}"/>
+	</mx:VBox>
+
+</mx:Application>

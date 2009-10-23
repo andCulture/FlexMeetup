@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <service name="ConfigurationService">
+    <annotation name="ActionScriptGeneration">
+      <item name="WSDL-service">ConfigurationService</item>
+      <item name="ServiceType">WebService</item>
+      <item name="WSDL">http://192.168.73.128/ConfigurationService.asmx?WSDL</item>
+      <item name="Package">services.configurationservice</item>
+      <item name="WSDL-port">ConfigurationServiceSoap</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">services/configurationservice/_Super_ConfigurationService.as~#~services/configurationservice/ConfigurationService.as~#~</item>
+    </annotation>
+    <annotation name="ASGenerationWSDLTypeMap">
+      <item name="ConfigurationDescriptor">http://www.winton.me/presentations/,ConfigurationDescriptor</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">WebService</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">descriptors</item>
+      <item name="WSDL-endpoint">http://192.168.73.128/ConfigurationService.asmx</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="RetrieveConfiguration" arguments="username:string" return-type="ConfigurationDescriptor">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="RetrieveConfiguration">http://www.winton.me/presentations/,RetrieveConfiguration</item>
+        <item name="SOAPAction">http://www.winton.me/presentations/RetrieveConfiguration</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">ConfigurationDescriptor</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="ConfigurationDescriptor">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">ConfigurationDescriptor</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">ConfigurationService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">descriptors</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">descriptors/_ConfigurationDescriptorEntityMetadata.as~#~descriptors/_Super_ConfigurationDescriptor.as~#~descriptors/ConfigurationDescriptor.as~#~</item>
+    </annotation>
+    <property name="debugMode" type="boolean" required="true"/>
+    <property name="applicationIconPath" type="string" required="true"/>
+    <property name="applicationIconCaption" type="string" required="true"/>
+  </entity>
+</model>
